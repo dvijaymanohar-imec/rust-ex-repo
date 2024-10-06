@@ -1,0 +1,55 @@
+# azure-pipelines.yml
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+pool:
+  vmImage: "ubuntu-latest"
+
+steps:
+  # Install Rust
+  - task: UseRust@0
+    inputs:
+      version: "stable"
+
+  # Check out the repository code
+  - task: Checkout@1
+    inputs:
+      clean: true
+
+  # Cache the cargo dependencies to speed up subsequent builds
+  - task: Cache@2
+    inputs:
+      key: 'cargo | "$(Agent.OS)" | Cargo.lock'
+      restoreKeys: |
+        cargo | "$(Agent.OS)"
+      path: $(HOME)/.cargo/registry
+
+  # Install project dependencies
+  - script: |
+      rustup component add clippy
+      rustup component add rustfmt
+    displayName: "Install Rust components"
+
+  # Build the project
+  - script: |
+      cargo build --release
+    displayName: "Build project"
+
+  # Run clippy (linter)
+  - script: |
+      cargo clippy -- -D warnings
+    displayName: "Run clippy"
+
+  # Run tests
+  - script: |
+      cargo test
+    displayName: "Run tests"
+
+  # Format check
+  - script: |
+      cargo fmt -- --check
+    displayName: "Check formatting"
