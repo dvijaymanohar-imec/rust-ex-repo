@@ -7,9 +7,18 @@ trigger:
       - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
+  - script: |
+      curl https://sh.rustup.rs -sSf | sh -s -- -y
+      echo "##vso[task.setvariable variable=PATH;]$PATH:$HOME/.cargo/bin"
+    displayName: Install rust
+  - script: cargo build --all
+    displayName: Cargo build
+  - script: cargo test --all
+    displayName: Cargo test
+
   # Check out the repository code
   - task: Checkout@1
     inputs:
@@ -19,7 +28,7 @@ steps:
   - script: |
       curl https://sh.rustup.rs -sSf | sh -s -- -y
       export PATH="$HOME/.cargo/bin:$PATH"
-    displayName: 'Install Rust'
+    displayName: "Install Rust"
 
   # Cache the cargo dependencies to speed up subsequent builds
   - task: Cache@2
@@ -34,28 +43,28 @@ steps:
       source $HOME/.cargo/env
       rustup component add clippy
       rustup component add rustfmt
-    displayName: 'Install Rust components'
+    displayName: "Install Rust components"
 
   # Build the project
   - script: |
       source $HOME/.cargo/env
       cargo build --release
-    displayName: 'Build project'
+    displayName: "Build project"
 
   # Run clippy (linter)
   - script: |
       source $HOME/.cargo/env
       cargo clippy -- -D warnings
-    displayName: 'Run clippy'
+    displayName: "Run clippy"
 
   # Run tests
   - script: |
       source $HOME/.cargo/env
       cargo test
-    displayName: 'Run tests'
+    displayName: "Run tests"
 
   # Format check
   - script: |
       source $HOME/.cargo/env
       cargo fmt -- --check
-    displayName: 'Check formatting'
+    displayName: "Check formatting"
