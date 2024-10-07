@@ -30,13 +30,13 @@ steps:
       export PATH="$HOME/.cargo/bin:$PATH"
     displayName: "Install Rust"
 
-  # Cache the cargo dependencies to speed up subsequent builds
-  - task: Cache@2
-    inputs:
-      key: 'cargo | "$(Agent.OS)" | Cargo.lock'
-      restoreKeys: |
-        cargo | "$(Agent.OS)"
-      path: $(Agent.HomeDirectory)/.cargo/registry
+  # # Cache the cargo dependencies to speed up subsequent builds
+  # - task: Cache@2
+  #   inputs:
+  #     key: 'cargo | "$(Agent.OS)" | Cargo.lock'
+  #     restoreKeys: |
+  #       cargo | "$(Agent.OS)"
+  #     path: $(Agent.HomeDirectory)/.cargo/registry
 
   # Install project dependencies
   - script: |
