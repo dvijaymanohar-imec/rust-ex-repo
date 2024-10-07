@@ -19,10 +19,10 @@ steps:
   - script: cargo test --all
     displayName: Cargo test
 
-  # Check out the repository code
-  - task: Checkout@1
-    inputs:
-      clean: true
+  # # Check out the repository code
+  # - task: Checkout@1
+  #   inputs:
+  #     clean: true
 
   # Install Rust (using shell script)
   - script: |
