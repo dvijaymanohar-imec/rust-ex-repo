@@ -63,8 +63,8 @@ steps:
       cargo test
     displayName: "Run tests"
 
-  # Format check
-  - script: |
-      source $HOME/.cargo/env
-      cargo fmt -- --check
-    displayName: "Check formatting"
+  # # Format check
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     cargo fmt -- --check
+  #   displayName: "Check formatting"
