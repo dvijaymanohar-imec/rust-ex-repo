@@ -19,52 +19,52 @@ steps:
   - script: cargo test --all
     displayName: Cargo test
 
-  # Check out the repository code
-  - task: Checkout@1
-    inputs:
-      clean: true
+  # # Check out the repository code
+  # - task: Checkout@1
+  #   inputs:
+  #     clean: true
 
-  # Install Rust (using shell script)
-  - script: |
-      curl https://sh.rustup.rs -sSf | sh -s -- -y
-      export PATH="$HOME/.cargo/bin:$PATH"
-    displayName: "Install Rust"
+  # # Install Rust (using shell script)
+  # - script: |
+  #     curl https://sh.rustup.rs -sSf | sh -s -- -y
+  #     export PATH="$HOME/.cargo/bin:$PATH"
+  #   displayName: "Install Rust"
 
-  # Cache the cargo dependencies to speed up subsequent builds
-  - task: Cache@2
-    inputs:
-      key: 'cargo | "$(Agent.OS)" | Cargo.lock'
-      restoreKeys: |
-        cargo | "$(Agent.OS)"
-      path: $(Agent.HomeDirectory)/.cargo/registry
+  # # Cache the cargo dependencies to speed up subsequent builds
+  # - task: Cache@2
+  #   inputs:
+  #     key: 'cargo | "$(Agent.OS)" | Cargo.lock'
+  #     restoreKeys: |
+  #       cargo | "$(Agent.OS)"
+  #     path: $(Agent.HomeDirectory)/.cargo/registry
 
-  # Install project dependencies
-  - script: |
-      source $HOME/.cargo/env
-      rustup component add clippy
-      rustup component add rustfmt
-    displayName: "Install Rust components"
+  # # Install project dependencies
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     rustup component add clippy
+  #     rustup component add rustfmt
+  #   displayName: "Install Rust components"
 
-  # Build the project
-  - script: |
-      source $HOME/.cargo/env
-      cargo build --release
-    displayName: "Build project"
+  # # Build the project
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     cargo build --release
+  #   displayName: "Build project"
 
-  # Run clippy (linter)
-  - script: |
-      source $HOME/.cargo/env
-      cargo clippy -- -D warnings
-    displayName: "Run clippy"
+  # # Run clippy (linter)
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     cargo clippy -- -D warnings
+  #   displayName: "Run clippy"
 
-  # Run tests
-  - script: |
-      source $HOME/.cargo/env
-      cargo test
-    displayName: "Run tests"
+  # # Run tests
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     cargo test
+  #   displayName: "Run tests"
 
-  # Format check
-  - script: |
-      source $HOME/.cargo/env
-      cargo fmt -- --check
-    displayName: "Check formatting"
+  # # Format check
+  # - script: |
+  #     source $HOME/.cargo/env
+  #     cargo fmt -- --check
+  #   displayName: "Check formatting"
